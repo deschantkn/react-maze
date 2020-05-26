@@ -7,6 +7,7 @@ export const useBoard = (width, height, player) => {
 
   useEffect(() => {
     if (width && height) {
+      console.log("whhhhat");
       const gameBoard = createBoard(width, height);
 
       // Place random sprites on the board
@@ -20,18 +21,6 @@ export const useBoard = (width, height, player) => {
       setBoard(gameBoard);
     }
   }, [width, height, player]);
-
-  // useEffect(() => {
-  //   const placePlayer = (prevBoard) => {
-  //     prevBoard[player.pos.x][player.pos.y] = "player";
-  //     console.log(prevBoard);
-  //     return prevBoard;
-  //   };
-
-  //   if (board) {
-  //     setBoard((prev) => placePlayer(prev));
-  //   }
-  // }, [player, board]);
 
   return [board, setBoard];
 };
