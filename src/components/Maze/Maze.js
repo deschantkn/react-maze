@@ -5,11 +5,13 @@ import { createBoard } from "../../helpers";
 import { StyledMazeWrapper, StyledMaze } from "./styles";
 import Board from "../Board/Board";
 import { useBoard } from "../../hooks/useBoard";
+import { usePlayer } from "../../hooks/usePlayer";
 
 const Maze = () => {
   const [boardWidth, setBoardWidth] = useState(null);
   const [boardHeight, setBoardHeight] = useState(null);
-  const [board, setBoard] = useBoard(boardWidth, boardHeight);
+  const [player, updatePlayerPos] = usePlayer();
+  const [board, setBoard] = useBoard(boardWidth, boardHeight, player);
 
   useEffect(() => {
     if (!boardWidth || !boardHeight) {
@@ -17,10 +19,12 @@ const Maze = () => {
       setBoardHeight(parseInt(prompt("Please enter board height")));
     }
 
-    // if (boardWidth && boardWidth) {
-    //   setBoard(createBoard(boardHeight, boardWidth));
-    // }
-  }, [boardWidth, boardHeight]);
+    if (boardHeight && boardWidth) {
+      updatePlayerPos({
+        pos: { x: Math.floor(boardWidth / 2), y: Math.floor(boardHeight / 2) },
+      });
+    }
+  }, [boardWidth, boardHeight, updatePlayerPos]);
 
   console.log("re-render");
   return (
