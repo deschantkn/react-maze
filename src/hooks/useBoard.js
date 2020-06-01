@@ -3,24 +3,22 @@ import { useState, useEffect } from "react";
 import { createBoard } from "../helpers";
 
 export const useBoard = (width, height, player) => {
-  const [board, setBoard] = useState(null);
+  const [board, setBoard] = useState(createBoard(width, height));
 
   useEffect(() => {
-    if (width && height) {
-      console.log("whhhhat");
-      const gameBoard = createBoard(width, height);
+    const updateBoard = (prevBoard) => {
+      const updatedBoard = prevBoard.map((row) =>
+        row.map((cell) =>
+          cell === "empty" || cell === "player" ? "empty" : cell
+        )
+      );
+      updatedBoard[player.pos.y][player.pos.x] = "player";
 
-      // Place random sprites on the board
-      for (let i = 0; i < width; i++) {
-        const randomX = Math.floor(Math.random() * width);
-        const randomY = Math.floor(Math.random() * height);
-        gameBoard[randomX][randomY] = "sprite";
-        gameBoard[player.pos.x][player.pos.y] = "player";
-      }
+      return updatedBoard;
+    };
 
-      setBoard(gameBoard);
-    }
-  }, [width, height, player]);
+    setBoard((prev) => updateBoard(prev));
+  }, [player.pos.x, player.pos.y]);
 
   return [board, setBoard];
 };
